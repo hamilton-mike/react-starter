@@ -11,45 +11,71 @@ class App extends React.Component {
     //things that are going to change
     this.state = {
       list: movies,
-      input: ''
+      input: '', //searching
+      inputTwo: '' //adding
     }// This binding is necessary to make 'this' work in the callback
-    this.search = this.search.bind(this);
-    this.match = this.match.bind(this)
+    this.typing = this.typing.bind(this);
+    this.match = this.match.bind(this);
+    this.add = this.add.bind(this);
   }
-  search(event) {
-    console.log(event.target.value, 'inside search method')
+
+  typing(event) {
+    // console.log(event.target.value)
+    // this.setState({
+    //   input: event.target.value
+    // })
     this.setState({ // setState makes changes
-      input: event.target.value
+      [event.target.name]: event.target.value
     })
   }
 
+
   match() {
-    var res = [];
-    this.state.list.filter(movie => {
+    var res = []; // array of results
+    this.state.list.filter(movie => { //filter through movies and see if typed input matches
       if(movie.title.toLocaleLowerCase().includes(this.state.input.toLocaleLowerCase())) {
         res.push(movie);
       }
     })
 
-    this.setState({
+    this.setState({ //setState makes changes
       list: res
     })
   }
 
+  add(newTitle) {
+    // console.log()
+    this.setState({
+      list: [...this.state.list, {title: newTitle}]
+    }, () => console.log(this.state))
+  }
 
   render() {
     //console.log  here
 
     return(
     <div>
-     <input type="text" placeholder="Search Movies" value={this.state.input} onChange={this.search.bind(this)}></input> <button onClick={this.match.bind(this)}>Go!</button>
+     <input
+      name="input"
+      placeholder="Search Movies"
+      value={this.state.input}
+      onChange={this.typing}></input>
+     <button onClick={this.match}>Go!</button>
+
      <MovieList
      title={this.state.list}
-     search={this.search.bind(this)}
-     match={this.match.bind(this)}
+     search={this.typing}
+     match={this.match}
      />
-     {console.log(this.state.list)}
+
+     <input
+      name="inputTwo"
+      placeholder="Add movie title here"
+      value={this.state.inputTwo}
+      onChange={this.typing}></input>
+    <button onClick={() => this.add(this.state.inputTwo)}>Add</button>
     </div>
+
   )}
 }
 

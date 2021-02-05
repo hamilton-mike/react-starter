@@ -5,10 +5,10 @@ import MovieTitle from './MovieTitle';
 
 var MovieList = (props) => (
     <div className="movie-list">
-       {props.title.map((film) => (
+       {props.title.map((film, i) => (
             <MovieTitle
                 film={film}
-                key={film.title}
+                key={i}
            />
        ))}
     </div>
